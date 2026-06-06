@@ -12,6 +12,8 @@ module.exports = {
       ],
       settings: {
         chromeFlags: "--headless=new --no-sandbox",
+        preset: "desktop",
+        throttlingMethod: "provided",
       },
     },
     assert: {
