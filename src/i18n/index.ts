@@ -14,8 +14,8 @@ export function getDictionary(locale: Locale): Dictionary {
 }
 
 export function getLocalePath(locale: Locale): string {
-  const base = import.meta.env.BASE_URL;
-  return locale === "ru" ? `${base}ru/` : base;
+  const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+  return locale === "ru" ? `${base}/ru/` : `${base}/`;
 }
 
 export function interpolate(
