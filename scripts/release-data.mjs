@@ -33,21 +33,11 @@ export async function readJson(url) {
 }
 
 export async function readProjectVersion() {
-  const cmake = await readFile(
-    new URL("../../CMakeLists.txt", import.meta.url),
-    "utf8",
-  );
-  const match = cmake.match(
-    /project\s*\(\s*waveflux\s+VERSION\s+([0-9]+(?:\.[0-9]+){1,3})/i,
-  );
-
-  if (!match) {
-    throw new Error(
-      "Unable to read project(waveflux VERSION ...) from CMakeLists.txt",
-    );
+  const fallback = await readJson(fallbackPath);
+  if (!fallback.version) {
+    throw new Error("Unable to read version from release.fallback.json");
   }
-
-  return match[1];
+  return fallback.version;
 }
 
 export function normalizeVersion(tagName) {
