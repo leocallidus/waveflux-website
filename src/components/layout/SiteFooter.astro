@@ -1,0 +1,88 @@
+---
+import { footerLinks, site } from "../../content/site";
+import { getDownloadAsset } from "../../content/release";
+import {
+  getLocalePath,
+  interpolate,
+  type Dictionary,
+  type Locale,
+} from "../../i18n";
+import Wordmark from "../brand/Wordmark.astro";
+import Button from "../ui/Button.astro";
+import Container from "./Container.astro";
+
+interface Props {
+  dictionary: Dictionary;
+  locale: Locale;
+}
+
+const { dictionary: t, locale } = Astro.props;
+const copyright = interpolate(t.footer.copyright, {
+  year: new Date().getUTCFullYear(),
+});
+const windowsFooterAsset = getDownloadAsset("windowsMsi");
+const linuxFooterAsset = getDownloadAsset("appImage");
+const homeHref = getLocalePath(locale);
+const alternateLocale = locale === "ru" ? "en" : "ru";
+const alternateLocaleHref = getLocalePath(alternateLocale);
+---
+
+<footer class="border-t border-line">
+  <Container class="py-10">
+    <div class="flex flex-col justify-between gap-8 md:flex-row">
+      <div class="max-w-md">
+        <a class="no-underline" href={homeHref}>
+          <Wordmark name={site.productName} />
+        </a>
+        <p class="wf-copy mt-3">{t.footer.summary}</p>
+      </div>
+
+      <div class="flex flex-col items-start gap-5 md:items-end">
+        <Button
+          href="#downloads"
+          size="sm"
+          data-download-cta
+          data-download-source="footer"
+          data-fallback-label={t.footer.downloadAction}
+          data-windows-label={t.hero.primaryActionWindows}
+          data-linux-label={t.hero.primaryActionLinux}
+          data-windows-url={windowsFooterAsset?.url}
+          data-linux-url={linuxFooterAsset?.url}
+        >
+          {t.footer.downloadAction}
+        </Button>
+        <nav
+          class="flex flex-wrap gap-x-5 gap-y-2"
+          aria-label={t.a11y.footerNavigation}
+        >
+          {
+            footerLinks.map((link) => (
+              <a
+                class="text-sm text-ink-secondary hover:text-ink"
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {t.footer.links[link.id]}
+              </a>
+            ))
+          }
+          <a
+            class="text-sm text-ink-secondary hover:text-ink"
+            href={alternateLocaleHref}
+            aria-label={t.header.languageSwitchLabel}
+          >
+            {t.header.languageSwitchValue}
+          </a>
+        </nav>
+      </div>
+    </div>
+
+    <div
+      class="mt-8 flex flex-col gap-2 border-t border-line pt-5 text-sm text-ink-muted sm:flex-row sm:items-center sm:justify-between"
+    >
+      <p>{copyright}</p>
+      <p class="font-mono">v{site.version}</p>
+    </div>
+  </Container>
+</footer>

@@ -1,0 +1,216 @@
+{
+  "meta": {
+    "title": "WaveFlux — десктопный аудиоплеер с навигацией по волне",
+    "description": "Десктопный аудиоплеер для Windows и Linux с навигацией по волновой форме, локальной библиотекой, плейлистами, трекерными модулями и редактированием метаданных."
+  },
+  "a11y": {
+    "skipToContent": "Перейти к содержимому",
+    "primaryNavigation": "Основная навигация",
+    "footerNavigation": "Навигация в подвале"
+  },
+  "header": {
+    "menuLabel": "Меню",
+    "languageLabel": "Язык",
+    "languageValue": "RU",
+    "languageSwitchLabel": "Переключить язык на английский",
+    "languageSwitchValue": "EN",
+    "themeLabel": "Тема",
+    "themeDark": "Тёмная",
+    "themeLight": "Светлая"
+  },
+  "navigation": {
+    "showcase": "Скриншоты",
+    "features": "Возможности",
+    "downloads": "Загрузки",
+    "openSource": "Открытый код"
+  },
+  "hero": {
+    "eyebrow": "Локальное воспроизведение · Windows и Linux",
+    "title": "Десктопный аудиоплеер с навигацией по волне",
+    "description": "Просматривайте локальную библиотеку, перемещайтесь по трекам через волновую форму, управляйте плейлистами и слушайте трекерные модули в одном приложении.",
+    "primaryAction": "Скачать WaveFlux",
+    "primaryActionWindows": "Скачать для Windows",
+    "primaryActionLinux": "Скачать для Linux",
+    "secondaryAction": "Другие платформы и пакеты",
+    "versionLabel": "Версия",
+    "licenseLabel": "Лицензия",
+    "sourceLabel": "Исходный код",
+    "sourceValue": "GitHub"
+  },
+  "showcase": {
+    "eyebrow": "Интерфейс",
+    "title": "Библиотека остаётся перед глазами",
+    "description": "Главное окно, подробные настройки и компактные элементы управления используют единый прямой визуальный язык.",
+    "items": {
+      "mainPlayer": {
+        "title": "Главное окно",
+        "description": "Навигация по волне, контекст плейлиста и управление воспроизведением в одном окне.",
+        "alt": "Главное окно плеера WaveFlux"
+      },
+      "settings": {
+        "title": "Настройки",
+        "description": "Параметры воспроизведения, оформления и интеграции сгруппированы по задачам.",
+        "alt": "Диалог настроек WaveFlux"
+      },
+      "compact": {
+        "title": "Компактный режим",
+        "description": "Основные кнопки воспроизведения и сведения о треке на меньшей поверхности.",
+        "alt": "Компактный режим плеера WaveFlux"
+      }
+    }
+  },
+  "features": {
+    "eyebrow": "Возможности",
+    "title": "Инструменты для локальной музыки",
+    "description": "WaveFlux объединяет воспроизведение, организацию библиотеки и аудиоинструменты, не перенося коллекцию в облачный сервис.",
+    "items": {
+      "waveform": {
+        "title": "Навигация по волне",
+        "description": "Перемещайтесь и меняйте масштаб по кэшированным пикам, включая полноэкранный режим волновой формы."
+      },
+      "playback": {
+        "title": "Непрерывное воспроизведение",
+        "description": "Gapless-переходы, очередь, повтор, детерминированный shuffle и восстановление сессии дают предсказуемый результат."
+      },
+      "trackers": {
+        "title": "Нативные трекерные модули",
+        "description": "OpenMPT воспроизводит .669, .mod, .xm, .s3m и .it с перемоткой, волной, спектром и восстановлением сессии."
+      },
+      "equalizer": {
+        "title": "10-полосный эквалайзер",
+        "description": "Используйте встроенные пресеты либо импортируйте и экспортируйте собственные настройки."
+      },
+      "playlists": {
+        "title": "Гибкие плейлисты",
+        "description": "Импортируйте файлы, папки, URL, XSPF и CUE; экспортируйте плейлисты в M3U, M3U8 или JSON."
+      },
+      "urlImport": {
+        "title": "Импорт аудио по URL",
+        "description": "Проверяйте источник через yt-dlp, выбирайте формат и просматривайте повторы и результаты импорта."
+      },
+      "converter": {
+        "title": "Конвертер аудио",
+        "description": "Конвертируйте отдельные треки или пакеты с проверкой форматов, профилями и настройками скорости или высоты тона."
+      },
+      "tags": {
+        "title": "Редактирование метаданных",
+        "description": "Изменяйте один трек или группу, включая обложки в форматах, которые их поддерживают."
+      },
+      "library": {
+        "title": "Умная локальная библиотека",
+        "description": "Коллекции на SQLite и поиск по полям упрощают навигацию по большим библиотекам."
+      },
+      "desktop": {
+        "title": "Интеграция с рабочим столом",
+        "description": "Используйте SMTC в Windows и MPRIS с XDG-порталами в поддерживаемых окружениях Linux."
+      },
+      "appearance": {
+        "title": "Настраиваемый интерфейс",
+        "description": "Выбирайте светлое или тёмное оформление, цвет акцента, обычный или компактный режим."
+      },
+      "languages": {
+        "title": "Английский и русский",
+        "description": "Интерфейс приложения и основные рабочие сценарии доступны на обоих языках."
+      }
+    }
+  },
+  "downloads": {
+    "eyebrow": "Пакеты",
+    "title": "Выберите сборку для своей системы",
+    "description": "Используйте установщик или портативный архив для Windows, AppImage либо нативный пакет для своего дистрибутива Linux.",
+    "statusLabel": "Целевая платформа",
+    "fileLabel": "Файл",
+    "sizeLabel": "Размер",
+    "checksumLabel": "Сумма",
+    "recommendedLabel": "Определённая платформа",
+    "downloadAction": "Скачать",
+    "placeholderAction": "Посмотреть релизы",
+    "releaseNotesAction": "Описание релиза",
+    "missingAsset": "Файл релиза недоступен",
+    "installTitle": "Установка из пакета",
+    "requirementsTitle": "Системные требования",
+    "copyLabel": "Копировать",
+    "copiedLabel": "Скопировано",
+    "requirements": [
+      "Windows 10 или новее, либо современный десктопный дистрибутив Linux.",
+      "Рабочая аудиосистема: службы звука Windows, PipeWire или PulseAudio в Linux.",
+      "Linux-пакетам могут требоваться Qt 6, KDE Frameworks 6, GStreamer, TagLib и libopenmpt в зависимости от формата."
+    ],
+    "platforms": {
+      "windows": "Windows",
+      "linux": "Linux"
+    },
+    "items": {
+      "windowsMsi": {
+        "title": "MSI-установщик",
+        "description": "Стандартная установка для 64-битной Windows.",
+        "format": ".msi"
+      },
+      "windowsPortable": {
+        "title": "Портативный архив",
+        "description": "Запуск WaveFlux из распакованной папки.",
+        "format": ".zip"
+      },
+      "appImage": {
+        "title": "AppImage",
+        "description": "Портативная Linux-сборка без системной установки.",
+        "format": ".AppImage"
+      },
+      "debian": {
+        "title": "Пакет Debian",
+        "description": "Пакет для Debian, Ubuntu и совместимых систем.",
+        "format": ".deb"
+      },
+      "rpm": {
+        "title": "Пакет RPM",
+        "description": "Пакет для Fedora и совместимых систем.",
+        "format": ".rpm"
+      },
+      "arch": {
+        "title": "Пакет Arch",
+        "description": "Рецепт сборки и поддержка пакета для Arch Linux.",
+        "format": "pkg.tar.zst"
+      }
+    },
+    "showOtherPlatform": "Показать загрузки для другой платформы",
+    "commands": {
+      "appImage": {
+        "title": "AppImage",
+        "template": "chmod +x {file}\n./{file}"
+      },
+      "debian": {
+        "title": "Debian / Ubuntu",
+        "template": "sudo apt install ./{file}"
+      },
+      "rpm": {
+        "title": "Fedora / RPM",
+        "template": "sudo dnf install ./{file}"
+      },
+      "arch": {
+        "title": "Arch Linux",
+        "template": "sudo pacman -U {file}"
+      }
+    }
+  },
+  "trust": {
+    "eyebrow": "Открытый код",
+    "title": "Изучайте код. Сохраняйте библиотеку приватной.",
+    "description": "WaveFlux выпускается по лицензии MIT. Проверка обновлений читает публичные метаданные релизов и не отправляет содержимое библиотеки, пути, плейлисты или настройки.",
+    "starAction": "Поставить звезду на GitHub",
+    "repositoryAction": "Открыть репозиторий",
+    "licenseAction": "Прочитать лицензию MIT",
+    "privacyTitle": "Приватность по умолчанию",
+    "privacyDescription": "Хранятся только технические данные обновлений: время последней проверки, ETag и пропущенный релиз."
+  },
+  "footer": {
+    "summary": "Локальное воспроизведение с навигацией по волне для Windows и Linux.",
+    "downloadAction": "Скачать WaveFlux",
+    "copyright": "© {year} Участники WaveFlux. Проект выпущен по лицензии MIT.",
+    "links": {
+      "github": "GitHub",
+      "releases": "Релизы",
+      "readme": "README",
+      "license": "Лицензия"
+    }
+  }
+}

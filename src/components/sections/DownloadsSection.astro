@@ -1,0 +1,592 @@
+---
+import {
+  formatBytes,
+  getDownloadAsset,
+  release,
+  shortDigest,
+  type ReleaseDownloadId,
+} from "../../content/release";
+import { downloads, footerLinks, type DownloadId } from "../../content/site";
+import { interpolate, type Dictionary } from "../../i18n";
+import PlatformIcon from "../brand/PlatformIcon.astro";
+import type { PlatformIconName } from "../brand/platform-icons";
+import Container from "../layout/Container.astro";
+import SectionHeading from "../layout/SectionHeading.astro";
+import Badge from "../ui/Badge.astro";
+import Button from "../ui/Button.astro";
+import Card from "../ui/Card.astro";
+import CodeBlock from "../ui/CodeBlock.astro";
+
+interface Props {
+  dictionary: Dictionary;
+}
+
+const { dictionary: t } = Astro.props;
+const releasesUrl =
+  footerLinks.find((link) => link.id === "releases")?.href ?? release.htmlUrl;
+const platformOrder = ["windows", "linux"] as const;
+const installCommandIds = ["appImage", "debian", "rpm", "arch"] as const;
+
+const platformIcon: Record<string, PlatformIconName> = {
+  windows: "windows",
+  linux: "linux",
+};
+
+const downloadIcon: Record<DownloadId, PlatformIconName> = {
+  windowsMsi: "windows",
+  windowsPortable: "windows",
+  appImage: "appimage",
+  debian: "debian",
+  rpm: "fedora",
+  arch: "arch",
+};
+---
+
+<section id="downloads" class="wf-section" aria-labelledby="downloads-title">
+  <Container>
+    <div class="flex flex-col justify-between gap-5 md:flex-row md:items-end">
+      <SectionHeading
+        eyebrow={t.downloads.eyebrow}
+        title={t.downloads.title}
+        description={t.downloads.description}
+        titleId="downloads-title"
+      />
+      <Button
+        href={releasesUrl}
+        variant="secondary"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {t.downloads.placeholderAction}
+      </Button>
+    </div>
+
+    <div class="mt-8" data-platforms-container>
+      {
+        platformOrder.map((platform) => (
+          <div
+            data-download-platform={platform}
+            class="wf-platform-section hidden"
+          >
+            <div class="mb-3 flex items-center gap-2">
+              <PlatformIcon
+                name={platformIcon[platform]}
+                size={22}
+                class="wf-platform-logo"
+              />
+              <h3 class="text-xl">{t.downloads.platforms[platform]}</h3>
+              <Badge variant="accent" data-detected-platform-badge>
+                {t.downloads.recommendedLabel}
+              </Badge>
+            </div>
+            <div class="grid gap-3 sm:grid-cols-2">
+              {downloads
+                .filter((download) => download.platform === platform)
+                .map((download) => {
+                  const item = t.downloads.items[download.id];
+                  const asset = getDownloadAsset(
+                    download.id as ReleaseDownloadId,
+                  );
+                  const checksum = shortDigest(asset?.digest ?? null);
+                  const icon = downloadIcon[download.id];
+
+                  return (
+                    <Card
+                      class="wf-download-card h-full"
+                      data-download-card
+                      data-download-id={download.id}
+                      data-platform={platform}
+                      data-download-url={asset?.url}
+                    >
+                      <div class="flex items-start justify-between gap-3">
+                        <div class="flex min-w-0 items-center gap-2">
+                          <PlatformIcon
+                            name={icon}
+                            size={20}
+                            class="wf-distro-icon flex-shrink-0"
+                          />
+                          <div class="min-w-0">
+                            <p class="wf-technical">{t.downloads.statusLabel}</p>
+                            <h4 class="mt-1 font-semibold text-ink">
+                              {item.title}
+                            </h4>
+                          </div>
+                        </div>
+                        <Badge variant="accent">{item.format}</Badge>
+                      </div>
+
+                      <p class="wf-copy mt-3 text-sm">{item.description}</p>
+
+                      {asset ? (
+                        <dl class="mt-4 grid gap-x-5 gap-y-2 text-sm">
+                          <div>
+                            <dt class="wf-technical">
+                              {t.downloads.fileLabel}
+                            </dt>
+                            <dd class="mt-1 break-all font-mono text-ink">
+                              {asset.name}
+                            </dd>
+                          </div>
+                          <div class="grid grid-cols-2 gap-x-5">
+                            <div>
+                              <dt class="wf-technical">
+                                {t.downloads.sizeLabel}
+                              </dt>
+                              <dd class="font-mono text-ink-secondary">
+                                {formatBytes(asset.size)}
+                              </dd>
+                            </div>
+                            {checksum && (
+                              <div class="min-w-0">
+                                <dt class="wf-technical">
+                                  {t.downloads.checksumLabel}
+                                </dt>
+                                <dd class="truncate font-mono text-ink-secondary">
+                                  {checksum}
+                                </dd>
+                              </div>
+                            )}
+                          </div>
+                        </dl>
+                      ) : (
+                        <p class="mt-4 text-sm text-danger">
+                          {t.downloads.missingAsset}
+                        </p>
+                      )}
+
+                      <div class="mt-5 flex flex-wrap gap-2">
+                        {asset ? (
+                          <Button
+                            href={asset.url}
+                            size="sm"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            data-download-link={download.id}
+                            data-download-source="downloads"
+                          >
+                            {t.downloads.downloadAction}
+                          </Button>
+                        ) : (
+                          <Button size="sm" disabled>
+                            {t.downloads.downloadAction}
+                          </Button>
+                        )}
+                        <Button
+                          href={release.htmlUrl}
+                          size="sm"
+                          variant="secondary"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {t.downloads.releaseNotesAction}
+                        </Button>
+                      </div>
+                    </Card>
+                  );
+                })}
+            </div>
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="mt-5" data-other-platform-toggle>
+      <button
+        type="button"
+        class="wf-other-platform-btn"
+        data-toggle-other-platform
+        aria-expanded="false"
+      >
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 24 24"
+          width="16"
+          height="16"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.8"
+        >
+          <path d="M8 9l4-4 4 4M16 15l-4 4-4-4"></path>
+        </svg>
+        <span data-toggle-label>{t.downloads.showOtherPlatform}</span>
+      </button>
+
+      <div class="mt-6 hidden" data-other-platform-section>
+        {
+          platformOrder.map((platform) => (
+            <div data-other-platform={platform} class="hidden">
+              <div class="mb-3 flex items-center gap-2">
+                <PlatformIcon
+                  name={platformIcon[platform]}
+                  size={22}
+                  class="wf-platform-logo"
+                />
+                <h3 class="text-xl">{t.downloads.platforms[platform]}</h3>
+              </div>
+              <div class="grid gap-3 sm:grid-cols-2">
+                {downloads
+                  .filter((download) => download.platform === platform)
+                  .map((download) => {
+                    const item = t.downloads.items[download.id];
+                    const asset = getDownloadAsset(
+                      download.id as ReleaseDownloadId,
+                    );
+                    const checksum = shortDigest(asset?.digest ?? null);
+                    const icon = downloadIcon[download.id];
+
+                    return (
+                      <Card
+                        class="wf-download-card h-full"
+                        data-download-card
+                        data-download-id={download.id}
+                        data-platform={platform}
+                        data-download-url={asset?.url}
+                      >
+                        <div class="flex items-start justify-between gap-3">
+                          <div class="flex min-w-0 items-center gap-2">
+                            <PlatformIcon
+                              name={icon}
+                              size={20}
+                              class="wf-distro-icon flex-shrink-0"
+                            />
+                            <div class="min-w-0">
+                              <p class="wf-technical">{t.downloads.statusLabel}</p>
+                              <h4 class="mt-1 font-semibold text-ink">
+                                {item.title}
+                              </h4>
+                            </div>
+                          </div>
+                          <Badge variant="accent">{item.format}</Badge>
+                        </div>
+
+                        <p class="wf-copy mt-3 text-sm">{item.description}</p>
+
+                        {asset ? (
+                          <dl class="mt-4 grid gap-x-5 gap-y-2 text-sm">
+                            <div>
+                              <dt class="wf-technical">
+                                {t.downloads.fileLabel}
+                              </dt>
+                              <dd class="mt-1 break-all font-mono text-ink">
+                                {asset.name}
+                              </dd>
+                            </div>
+                            <div class="grid grid-cols-2 gap-x-5">
+                              <div>
+                                <dt class="wf-technical">
+                                  {t.downloads.sizeLabel}
+                                </dt>
+                                <dd class="font-mono text-ink-secondary">
+                                  {formatBytes(asset.size)}
+                                </dd>
+                              </div>
+                              {checksum && (
+                                <div class="min-w-0">
+                                  <dt class="wf-technical">
+                                    {t.downloads.checksumLabel}
+                                  </dt>
+                                  <dd class="truncate font-mono text-ink-secondary">
+                                    {checksum}
+                                  </dd>
+                                </div>
+                              )}
+                            </div>
+                          </dl>
+                        ) : (
+                          <p class="mt-4 text-sm text-danger">
+                            {t.downloads.missingAsset}
+                          </p>
+                        )}
+
+                        <div class="mt-5 flex flex-wrap gap-2">
+                          {asset ? (
+                            <Button
+                              href={asset.url}
+                              size="sm"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              data-download-link={download.id}
+                              data-download-source="downloads"
+                            >
+                              {t.downloads.downloadAction}
+                            </Button>
+                          ) : (
+                            <Button size="sm" disabled>
+                              {t.downloads.downloadAction}
+                            </Button>
+                          )}
+                          <Button
+                            href={release.htmlUrl}
+                            size="sm"
+                            variant="secondary"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {t.downloads.releaseNotesAction}
+                          </Button>
+                        </div>
+                      </Card>
+                    );
+                  })}
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+
+    <div class="mt-10 grid gap-6 lg:grid-cols-[1.15fr_0.85fr]">
+      <div>
+        <h3 class="text-xl">{t.downloads.installTitle}</h3>
+        <div class="mt-4 grid gap-4">
+          {
+            installCommandIds.map((id) => {
+              const command = t.downloads.commands[id];
+              const asset = getDownloadAsset(id);
+              const file = asset?.name ?? t.downloads.missingAsset;
+              const icon = downloadIcon[id];
+
+              return (
+                <CodeBlock
+                  label={command.title}
+                  code={interpolate(command.template, { file })}
+                  copyLabel={t.downloads.copyLabel}
+                  copiedLabel={t.downloads.copiedLabel}
+                >
+                  <PlatformIcon slot="icon" name={icon} size={15} class="wf-install-icon" />
+                </CodeBlock>
+              );
+            })
+          }
+        </div>
+      </div>
+
+      <Card>
+        <h3 class="text-xl">{t.downloads.requirementsTitle}</h3>
+        <ul class="mt-4 space-y-3 text-sm text-ink-secondary">
+          {
+            t.downloads.requirements.map((requirement) => (
+              <li class="flex gap-2">
+                <span class="mt-2 h-1.5 w-1.5 flex-none rounded-full bg-accent" />
+                <span>{requirement}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </Card>
+    </div>
+  </Container>
+</section>
+
+<script>
+  const platformFromUserAgent = () => {
+    const ua = navigator.userAgent.toLowerCase();
+    if (ua.includes("windows")) return "windows";
+    if (ua.includes("linux")) return "linux";
+    return "unknown";
+  };
+
+  const initializeDownloads = () => {
+    const platform = platformFromUserAgent();
+    const preferredDownloadId =
+      platform === "windows"
+        ? "windowsMsi"
+        : platform === "linux"
+          ? "appImage"
+          : null;
+    const otherPlatform =
+      platform === "windows"
+        ? "linux"
+        : platform === "linux"
+          ? "windows"
+          : null;
+
+    document
+      .querySelectorAll<HTMLElement>("[data-download-platform]")
+      .forEach((section) => {
+        const sectionPlatform = section.dataset.downloadPlatform;
+        if (platform === "unknown") {
+          section.classList.remove("hidden");
+        } else {
+          section.classList.toggle("hidden", sectionPlatform !== platform);
+        }
+        section
+          .querySelectorAll<HTMLElement>("[data-detected-platform-badge]")
+          .forEach((badge) => {
+            badge.classList.toggle("hidden", sectionPlatform !== platform);
+          });
+      });
+
+    const toggleWrap = document.querySelector<HTMLElement>(
+      "[data-other-platform-toggle]",
+    );
+    if (toggleWrap) {
+      toggleWrap.classList.toggle("hidden", platform === "unknown");
+    }
+
+    document
+      .querySelectorAll<HTMLElement>("[data-other-platform]")
+      .forEach((section) => {
+        section.classList.toggle(
+          "hidden",
+          section.dataset.otherPlatform !== otherPlatform,
+        );
+      });
+
+    document
+      .querySelectorAll<HTMLElement>("[data-download-card]")
+      .forEach((card) => {
+        card.classList.toggle(
+          "wf-download-card--recommended",
+          card.dataset.downloadId === preferredDownloadId,
+        );
+      });
+
+    const ctas =
+      document.querySelectorAll<HTMLAnchorElement>("[data-download-cta]");
+    if (!preferredDownloadId) {
+      ctas.forEach((cta) => {
+        delete cta.dataset.detectedPlatform;
+        delete cta.dataset.downloadLink;
+      });
+      return;
+    }
+
+    ctas.forEach((cta) => {
+      const url =
+        platform === "windows" ? cta.dataset.windowsUrl : cta.dataset.linuxUrl;
+      const label =
+        platform === "windows"
+          ? cta.dataset.windowsLabel
+          : cta.dataset.linuxLabel;
+      if (url) {
+        cta.href = url;
+        cta.target = "_blank";
+        cta.rel = "noopener noreferrer";
+        cta.dataset.detectedPlatform = platform;
+        cta.dataset.downloadLink = preferredDownloadId;
+        const text = cta.querySelector("span");
+        if (text && label) text.textContent = label;
+      }
+    });
+  };
+
+  const initializeToggle = () => {
+    const btn = document.querySelector<HTMLButtonElement>(
+      "[data-toggle-other-platform]",
+    );
+    const section = document.querySelector<HTMLElement>(
+      "[data-other-platform-section]",
+    );
+    if (!btn || !section) return;
+    if (btn.dataset.toggleBound === "true") return;
+    btn.dataset.toggleBound = "true";
+
+    btn.addEventListener("click", () => {
+      const open = !section.classList.contains("hidden");
+      section.classList.toggle("hidden", open);
+      btn.setAttribute("aria-expanded", String(!open));
+      const icon = btn.querySelector("svg");
+      if (icon) icon.style.transform = open ? "" : "rotate(180deg)";
+    });
+  };
+
+  const initializeDownloadTracking = () => {
+    document
+      .querySelectorAll<HTMLAnchorElement>("[data-download-link]")
+      .forEach((link) => {
+        if (link.dataset.trackingBound === "true") return;
+        link.dataset.trackingBound = "true";
+        link.addEventListener("click", () => {
+          const card = link.closest<HTMLElement>("[data-download-card]");
+          const eventDetail = {
+            event: "waveflux_download_click",
+            downloadId: link.dataset.downloadLink,
+            platform:
+              card?.dataset.platform ?? link.dataset.detectedPlatform ?? null,
+            source: link.dataset.downloadSource ?? "unknown",
+          };
+          window.dispatchEvent(
+            new CustomEvent("waveflux:download-click", { detail: eventDetail }),
+          );
+          const analyticsWindow = window as Window & {
+            dataLayer?: Array<Record<string, unknown>>;
+          };
+          analyticsWindow.dataLayer?.push(eventDetail);
+        });
+      });
+  };
+
+  initializeDownloads();
+  initializeToggle();
+  initializeDownloadTracking();
+  document.addEventListener("astro:page-load", () => {
+    initializeDownloads();
+    initializeToggle();
+    initializeDownloadTracking();
+  });
+</script>
+
+<style>
+  .wf-platform-logo {
+    color: rgb(var(--color-ink-secondary));
+    opacity: 0.85;
+  }
+
+  .wf-distro-icon {
+    color: rgb(var(--color-ink-muted));
+    opacity: 0.9;
+    transition: opacity 0.15s;
+  }
+
+  .wf-download-card:hover .wf-distro-icon {
+    opacity: 1;
+  }
+
+  .wf-download-card {
+    position: relative;
+  }
+
+  .wf-download-card--recommended {
+    border-color: rgb(var(--color-accent) / 0.58);
+    box-shadow:
+      0 0 0 1px rgb(var(--color-accent) / 0.16),
+      0 18px 54px rgb(var(--color-accent) / 0.1);
+  }
+
+  .wf-download-card--recommended::before {
+    position: absolute;
+    inset: 0 auto auto 0;
+    width: 100%;
+    height: 3px;
+    content: "";
+    background: rgb(var(--color-accent));
+  }
+
+  .wf-other-platform-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid rgb(var(--color-line));
+    border-radius: 6px;
+    padding: 8px 14px;
+    background: transparent;
+    color: rgb(var(--color-ink-secondary));
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition:
+      border-color 0.15s,
+      color 0.15s;
+  }
+
+  .wf-other-platform-btn:hover {
+    border-color: rgb(var(--color-accent) / 0.5);
+    color: rgb(var(--color-ink));
+  }
+
+  .wf-other-platform-btn svg {
+    flex-shrink: 0;
+    transition: transform 0.2s;
+  }
+</style>

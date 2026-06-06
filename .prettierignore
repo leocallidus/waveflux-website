@@ -1,0 +1,6 @@
+dist
+.astro
+.lighthouse
+.lighthouse-ci
+.lighthouseci
+node_modules

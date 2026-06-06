@@ -1,0 +1,123 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+type Variant = "primary" | "secondary";
+type Size = "sm" | "md";
+
+interface Props extends Omit<HTMLAttributes<"a">, "size"> {
+  href?: string;
+  variant?: Variant;
+  size?: Size;
+  type?: "button" | "submit" | "reset";
+  disabled?: boolean;
+}
+
+const {
+  href,
+  variant = "primary",
+  size = "md",
+  type = "button",
+  disabled = false,
+  class: className,
+  ...attrs
+} = Astro.props;
+
+const classes = [
+  "wf-button",
+  `wf-button--${variant}`,
+  `wf-button--${size}`,
+  className,
+];
+---
+
+{
+  href && !disabled ? (
+    <a class:list={classes} href={href} {...attrs}>
+      <slot name="icon" />
+      <span>
+        <slot />
+      </span>
+    </a>
+  ) : (
+    <button
+      class:list={classes}
+      type={type}
+      disabled={disabled}
+      aria-disabled={disabled ? "true" : undefined}
+      {...attrs}
+    >
+      <slot name="icon" />
+      <span>
+        <slot />
+      </span>
+    </button>
+  )
+}
+
+<style>
+  .wf-button {
+    display: inline-flex;
+    min-height: 2.5rem;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    font-size: 0.9375rem;
+    font-weight: 650;
+    line-height: 1;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      border-color 160ms ease,
+      background-color 160ms ease,
+      color 160ms ease,
+      box-shadow 160ms ease,
+      transform 160ms ease;
+  }
+
+  .wf-button:hover:not(:disabled) {
+    transform: translateY(-1px);
+  }
+
+  .wf-button:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  .wf-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.48;
+  }
+
+  .wf-button--sm {
+    min-height: 2rem;
+    padding: 6px 12px;
+    font-size: 0.8125rem;
+  }
+
+  .wf-button--md {
+    padding: 8px 16px;
+  }
+
+  .wf-button--primary {
+    background: rgb(var(--color-accent));
+    color: rgb(var(--color-accent-contrast));
+    box-shadow: 0 8px 24px rgb(var(--color-accent) / 0.16);
+  }
+
+  .wf-button--primary:hover:not(:disabled) {
+    background: rgb(var(--color-accent-strong));
+    box-shadow: 0 10px 30px rgb(var(--color-accent) / 0.24);
+  }
+
+  .wf-button--secondary {
+    border-color: rgb(var(--color-line));
+    background: rgb(var(--color-surface));
+    color: rgb(var(--color-ink));
+  }
+
+  .wf-button--secondary:hover:not(:disabled) {
+    border-color: rgb(var(--color-line-strong));
+    background: rgb(var(--color-surface-raised));
+  }
+</style>

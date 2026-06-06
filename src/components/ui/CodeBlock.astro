@@ -1,0 +1,198 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"div"> {
+  code: string;
+  label?: string;
+  copyLabel?: string;
+  copiedLabel?: string;
+}
+
+const {
+  code,
+  label,
+  copyLabel = "Copy",
+  copiedLabel = "Copied",
+  class: className,
+  ...attrs
+} = Astro.props;
+---
+
+<div
+  class:list={["wf-code", className]}
+  data-code-block
+  data-copy-label={copyLabel}
+  data-copied-label={copiedLabel}
+  {...attrs}
+>
+  {
+    (label || Astro.slots.has("icon")) && (
+      <div class="wf-code__header">
+        <slot name="icon" />
+        {label && <span>{label}</span>}
+      </div>
+    )
+  }
+  <div class="wf-code__body">
+    <pre><code>{code}</code></pre>
+    <button class="wf-code__copy" type="button" data-copy-button>
+      <svg
+        aria-hidden="true"
+        viewBox="0 0 24 24"
+        width="16"
+        height="16"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.8"
+      >
+        <rect x="8" y="8" width="11" height="11" rx="2"></rect>
+        <path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"
+        ></path>
+      </svg>
+      <span data-copy-text>{copyLabel}</span>
+    </button>
+  </div>
+  <span class="sr-only" aria-live="polite" data-copy-status></span>
+</div>
+
+<script>
+  const fallbackCopy = (value: string) => {
+    const textarea = document.createElement("textarea");
+    textarea.value = value;
+    textarea.setAttribute("readonly", "");
+    textarea.style.position = "fixed";
+    textarea.style.opacity = "0";
+    document.body.append(textarea);
+    textarea.select();
+    const { execCommand } = document as unknown as {
+      execCommand: (command: string) => boolean;
+    };
+    const copied = execCommand.call(document, "copy");
+    textarea.remove();
+    return copied;
+  };
+
+  const copyText = async (value: string) => {
+    if (navigator.clipboard?.writeText) {
+      try {
+        await Promise.race([
+          navigator.clipboard.writeText(value),
+          new Promise((_, reject) =>
+            window.setTimeout(
+              () => reject(new Error("Clipboard timeout")),
+              300,
+            ),
+          ),
+        ]);
+        return true;
+      } catch {
+        return fallbackCopy(value);
+      }
+    }
+
+    return fallbackCopy(value);
+  };
+
+  const initializeCodeBlocks = () => {
+    document
+      .querySelectorAll<HTMLElement>("[data-code-block]")
+      .forEach((block) => {
+        if (block.dataset.initialized === "true") return;
+
+        const button =
+          block.querySelector<HTMLButtonElement>("[data-copy-button]");
+        const text = block.querySelector<HTMLElement>("[data-copy-text]");
+        const status = block.querySelector<HTMLElement>("[data-copy-status]");
+        const code = block.querySelector("code")?.textContent ?? "";
+
+        if (!button || !text || !status) return;
+
+        block.dataset.initialized = "true";
+        button.addEventListener("click", async () => {
+          const copyLabel = block.dataset.copyLabel ?? "Copy";
+          const copiedLabel = block.dataset.copiedLabel ?? "Copied";
+
+          try {
+            const copied = await copyText(code);
+            if (!copied) throw new Error("Copy failed");
+
+            text.textContent = copiedLabel;
+            status.textContent = copiedLabel;
+            window.setTimeout(() => {
+              text.textContent = copyLabel;
+              status.textContent = "";
+            }, 1800);
+          } catch {
+            status.textContent = "Copy failed";
+          }
+        });
+      });
+  };
+
+  initializeCodeBlocks();
+  document.addEventListener("astro:page-load", initializeCodeBlocks);
+</script>
+
+<style>
+  .wf-code {
+    overflow: hidden;
+    border: 1px solid rgb(var(--color-line));
+    border-radius: 8px;
+    background: rgb(var(--color-surface-sunken));
+  }
+
+  .wf-code__header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border-bottom: 1px solid rgb(var(--color-line));
+    padding: 6px 12px;
+    color: rgb(var(--color-ink-muted));
+    font-family:
+      ui-monospace, SFMono-Regular, "Cascadia Code", "Roboto Mono", Consolas,
+      monospace;
+    font-size: 0.75rem;
+  }
+
+  .wf-code__body {
+    position: relative;
+    display: flex;
+    min-width: 0;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .wf-code pre {
+    min-width: 0;
+    flex: 1;
+    overflow-x: auto;
+    margin: 0;
+    padding: 4px 0;
+    color: rgb(var(--color-ink-secondary));
+    font-size: 0.8125rem;
+    line-height: 1.6;
+  }
+
+  .wf-code__copy {
+    display: inline-flex;
+    min-height: 2rem;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid rgb(var(--color-line));
+    border-radius: 4px;
+    padding: 6px 8px;
+    background: rgb(var(--color-surface));
+    color: rgb(var(--color-ink-secondary));
+    font-family: inherit;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .wf-code__copy:hover {
+    border-color: rgb(var(--color-line-strong));
+    color: rgb(var(--color-ink));
+  }
+</style>

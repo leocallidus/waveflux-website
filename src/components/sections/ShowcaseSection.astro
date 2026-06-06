@@ -1,0 +1,269 @@
+---
+import { Picture } from "astro:assets";
+import { screenshots } from "../../content/site";
+import type { Dictionary } from "../../i18n";
+import compactSkinDark from "../../../../screenshots/compact-skin-dark.png";
+import compactSkinLight from "../../../../screenshots/compact-skin-light.png";
+import mainPlayerWindowDark from "../../../../screenshots/main-player-window-dark.png";
+import mainPlayerWindowLight from "../../../../screenshots/main-player-window-light.png";
+import settingsDialogDark from "../../../../screenshots/settings-dialog-dark.png";
+import settingsDialogLight from "../../../../screenshots/settings-dialog-light.png";
+import Container from "../layout/Container.astro";
+import SectionHeading from "../layout/SectionHeading.astro";
+import Badge from "../ui/Badge.astro";
+
+interface Props {
+  dictionary: Dictionary;
+}
+
+const { dictionary: t } = Astro.props;
+const screenshotSources = {
+  mainPlayer: { dark: mainPlayerWindowDark, light: mainPlayerWindowLight },
+  settings: { dark: settingsDialogDark, light: settingsDialogLight },
+  compact: { dark: compactSkinDark, light: compactSkinLight },
+} as const;
+---
+
+<section id="showcase" class="wf-section" aria-labelledby="showcase-title">
+  <Container>
+    <SectionHeading
+      eyebrow={t.showcase.eyebrow}
+      title={t.showcase.title}
+      description={t.showcase.description}
+      titleId="showcase-title"
+    />
+
+    <div class="wf-showcase mt-8" data-showcase>
+      <div class="wf-showcase-stage">
+        {
+          screenshots.map((screenshot, index) => {
+            const item = t.showcase.items[screenshot.id];
+            return (
+              <figure
+                id={`showcase-panel-${screenshot.id}`}
+                class:list={["wf-showcase-slide", index === 0 && "is-active"]}
+                data-showcase-panel={screenshot.id}
+                aria-hidden={index === 0 ? "false" : "true"}
+              >
+                <div class="wf-screenshot-frame">
+                  <Picture
+                    src={screenshotSources[screenshot.id].dark}
+                    alt={item.alt}
+                    formats={["webp"]}
+                    widths={
+                      index === 0
+                        ? [640, 960, screenshot.width]
+                        : [360, 640, screenshot.width]
+                    }
+                    sizes="(min-width: 1024px) 58vw, 100vw"
+                    loading="lazy"
+                    decoding="async"
+                    class="wf-screenshot-image wf-screenshot-dark"
+                  />
+                  <Picture
+                    src={screenshotSources[screenshot.id].light}
+                    alt={item.alt}
+                    formats={["webp"]}
+                    widths={
+                      index === 0
+                        ? [640, 960, screenshot.width]
+                        : [360, 640, screenshot.width]
+                    }
+                    sizes="(min-width: 1024px) 58vw, 100vw"
+                    loading="lazy"
+                    decoding="async"
+                    class="wf-screenshot-image wf-screenshot-light"
+                  />
+                </div>
+                <figcaption class="border-t border-line p-4">
+                  <Badge>{String(index + 1).padStart(2, "0")}</Badge>
+                  <h3 class="mt-3 text-lg">{item.title}</h3>
+                  <p class="wf-copy mt-2">{item.description}</p>
+                </figcaption>
+              </figure>
+            );
+          })
+        }
+      </div>
+
+      <div
+        class="wf-showcase-tabs"
+        role="tablist"
+        aria-labelledby="showcase-title"
+      >
+        {
+          screenshots.map((screenshot, index) => {
+            const item = t.showcase.items[screenshot.id];
+            return (
+              <button
+                class:list={["wf-showcase-tab", index === 0 && "is-active"]}
+                type="button"
+                role="tab"
+                id={`showcase-tab-${screenshot.id}`}
+                aria-selected={index === 0 ? "true" : "false"}
+                aria-controls={`showcase-panel-${screenshot.id}`}
+                data-showcase-tab={screenshot.id}
+              >
+                <span class="wf-technical">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <span class="mt-2 block font-semibold text-ink">
+                  {item.title}
+                </span>
+                <span class="mt-1 block text-sm leading-6 text-ink-secondary">
+                  {item.description}
+                </span>
+              </button>
+            );
+          })
+        }
+      </div>
+    </div>
+  </Container>
+</section>
+
+<script>
+  const initializeShowcase = () => {
+    document
+      .querySelectorAll<HTMLElement>("[data-showcase]")
+      .forEach((root) => {
+        if (root.dataset.showcaseReady === "true") return;
+        root.dataset.showcaseReady = "true";
+
+        const tabs = [
+          ...root.querySelectorAll<HTMLButtonElement>("[data-showcase-tab]"),
+        ];
+        const panels = [
+          ...root.querySelectorAll<HTMLElement>("[data-showcase-panel]"),
+        ];
+
+        const activate = (id: string) => {
+          tabs.forEach((tab) => {
+            const selected = tab.dataset.showcaseTab === id;
+            tab.classList.toggle("is-active", selected);
+            tab.setAttribute("aria-selected", String(selected));
+          });
+
+          panels.forEach((panel) => {
+            const selected = panel.dataset.showcasePanel === id;
+            panel.classList.toggle("is-active", selected);
+            panel.setAttribute("aria-hidden", String(!selected));
+          });
+        };
+
+        tabs.forEach((tab) => {
+          tab.addEventListener("click", () => {
+            const id = tab.dataset.showcaseTab;
+            if (id) activate(id);
+          });
+        });
+      });
+  };
+
+  initializeShowcase();
+  document.addEventListener("astro:page-load", initializeShowcase);
+</script>
+
+<style>
+  .wf-showcase {
+    display: grid;
+    gap: 16px;
+  }
+
+  @media (min-width: 1024px) {
+    .wf-showcase {
+      grid-template-columns: minmax(0, 1.45fr) minmax(280px, 0.55fr);
+      align-items: stretch;
+    }
+  }
+
+  .wf-showcase-stage {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgb(var(--color-line));
+    border-radius: 8px;
+    background: rgb(var(--color-surface));
+    box-shadow: 0 18px 54px rgb(0 0 0 / 0.18);
+  }
+
+  .wf-showcase-slide {
+    display: none;
+    margin: 0;
+  }
+
+  .wf-showcase-slide.is-active {
+    display: block;
+  }
+
+  .wf-screenshot-frame {
+    overflow: hidden;
+    background:
+      radial-gradient(
+        circle at 50% 100%,
+        rgb(var(--color-accent) / 0.1),
+        transparent 42%
+      ),
+      rgb(var(--color-surface-sunken));
+  }
+
+  .wf-screenshot-image {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  :global(:root[data-theme="dark"]) .wf-screenshot-light {
+    display: none;
+  }
+
+  :global(:root:not([data-theme="dark"])) .wf-screenshot-dark {
+    display: none;
+  }
+
+  .wf-showcase-tabs {
+    display: grid;
+    gap: 12px;
+  }
+
+  @media (max-width: 1023px) {
+    .wf-showcase-tabs {
+      grid-auto-columns: minmax(240px, 1fr);
+      grid-auto-flow: column;
+      overflow-x: auto;
+      padding-bottom: 6px;
+    }
+  }
+
+  .wf-showcase-tab {
+    display: block;
+    width: 100%;
+    min-height: 9rem;
+    border: 1px solid rgb(var(--color-line));
+    border-radius: 8px;
+    padding: 16px;
+    background: rgb(var(--color-surface));
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+    transition:
+      border-color 160ms ease,
+      background-color 160ms ease,
+      transform 160ms ease;
+  }
+
+  .wf-showcase-tab:hover,
+  .wf-showcase-tab.is-active {
+    border-color: rgb(var(--color-accent) / 0.5);
+    background: rgb(var(--color-surface-raised));
+  }
+
+  .wf-showcase-tab.is-active {
+    box-shadow: inset 3px 0 0 rgb(var(--color-accent));
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .wf-showcase-tab {
+      transition: none;
+    }
+  }
+</style>

@@ -1,0 +1,166 @@
+---
+import WaveformMotif from "../components/brand/WaveformMotif.astro";
+import Container from "../components/layout/Container.astro";
+import Badge from "../components/ui/Badge.astro";
+import Button from "../components/ui/Button.astro";
+import Card from "../components/ui/Card.astro";
+import CodeBlock from "../components/ui/CodeBlock.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const colors = [
+  ["canvas", "bg-canvas"],
+  ["surface", "bg-surface"],
+  ["surface-raised", "bg-surface-raised"],
+  ["surface-sunken", "bg-surface-sunken"],
+  ["line", "bg-line"],
+  ["accent", "bg-accent"],
+  ["waveform", "bg-waveform"],
+  ["danger", "bg-danger"],
+];
+---
+
+<BaseLayout
+  title="WaveFlux UI styleguide"
+  description="Development-only WaveFlux website design system reference."
+>
+  <main class="py-12 sm:py-16">
+    <Container>
+      <header class="max-w-prose">
+        <p class="wf-eyebrow">WaveFlux // design system</p>
+        <h1 class="wf-display mt-3">Calm surfaces. Precise controls.</h1>
+        <p class="wf-lead mt-4">
+          Development reference for the website tokens and primitives. The
+          visual language mirrors the desktop player: compact spacing, quiet
+          borders, technical type and a focused green accent.
+        </p>
+      </header>
+
+      <WaveformMotif class="my-12 max-w-3xl justify-start" />
+
+      <section class="mt-12" aria-labelledby="colors-title">
+        <p class="wf-eyebrow">Foundation</p>
+        <h2 id="colors-title" class="wf-title mt-2">Color tokens</h2>
+        <div class="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          {
+            colors.map(([name, colorClass]) => (
+              <div class="overflow-hidden rounded-md border border-line bg-surface">
+                <div class:list={["h-20", colorClass]} />
+                <div class="border-t border-line p-3">
+                  <code class="text-sm text-ink-secondary">{name}</code>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </section>
+
+      <section class="mt-16" aria-labelledby="type-title">
+        <p class="wf-eyebrow">Foundation</p>
+        <h2 id="type-title" class="wf-title mt-2">Typography</h2>
+        <Card class="mt-5 space-y-5">
+          <div>
+            <p class="wf-eyebrow">Eyebrow / mono</p>
+            <p class="wf-technical mt-2">
+              WaveFlux-1.0.0-windows-x64.msi · title:signals is:lossless
+            </p>
+          </div>
+          <div>
+            <h3 class="text-xl">Desktop audio without the cloud</h3>
+            <p class="wf-copy mt-2 max-w-prose">
+              System sans-serif keeps interface text familiar and fast to
+              render. Technical metadata uses the platform monospace stack.
+            </p>
+          </div>
+        </Card>
+      </section>
+
+      <section class="mt-16" aria-labelledby="controls-title">
+        <p class="wf-eyebrow">Components</p>
+        <h2 id="controls-title" class="wf-title mt-2">Controls and status</h2>
+        <Card class="mt-5">
+          <div class="flex flex-wrap items-center gap-3">
+            <Button>Download for Linux</Button>
+            <Button variant="secondary">All packages</Button>
+            <Button size="sm">Compact action</Button>
+            <Button disabled>Unavailable</Button>
+          </div>
+          <div class="mt-5 flex flex-wrap items-center gap-2">
+            <Badge variant="accent">v1.0.0</Badge>
+            <Badge>MIT license</Badge>
+            <Badge>.AppImage</Badge>
+            <Badge variant="danger">checksum mismatch</Badge>
+          </div>
+        </Card>
+      </section>
+
+      <section class="mt-16" aria-labelledby="cards-title">
+        <p class="wf-eyebrow">Components</p>
+        <h2 id="cards-title" class="wf-title mt-2">Cards</h2>
+        <div class="mt-5 grid gap-4 md:grid-cols-3">
+          <Card>
+            <Badge>standard</Badge>
+            <h3 class="mt-4 text-lg">Local library</h3>
+            <p class="wf-copy mt-2">
+              A neutral surface for feature descriptions and supporting
+              information.
+            </p>
+          </Card>
+          <Card accent>
+            <Badge variant="accent">recommended</Badge>
+            <h3 class="mt-4 text-lg">AppImage</h3>
+            <p class="wf-copy mt-2">
+              Accent borders identify the relevant platform without flooding the
+              layout with color.
+            </p>
+          </Card>
+          <Card interactive>
+            <Badge>interactive</Badge>
+            <h3 class="mt-4 text-lg">Release notes</h3>
+            <p class="wf-copy mt-2">
+              Optional hover feedback is reserved for genuinely interactive
+              surfaces.
+            </p>
+          </Card>
+        </div>
+      </section>
+
+      <section class="mt-16" aria-labelledby="code-title">
+        <p class="wf-eyebrow">Components</p>
+        <h2 id="code-title" class="wf-title mt-2">Code block</h2>
+        <div class="mt-5 max-w-3xl">
+          <CodeBlock
+            label="AppImage"
+            code={"chmod +x WaveFlux-1.0.0-x86_64.AppImage\n./WaveFlux-1.0.0-x86_64.AppImage"}
+          />
+        </div>
+      </section>
+
+      <section class="mt-16" aria-labelledby="spacing-title">
+        <p class="wf-eyebrow">Foundation</p>
+        <h2 id="spacing-title" class="wf-title mt-2">Spacing and radii</h2>
+        <Card class="mt-5">
+          <div class="flex flex-wrap items-end gap-5">
+            {
+              [
+                ["small", "6px", "h-[6px] w-12"],
+                ["medium", "8px", "h-[8px] w-16"],
+                ["large", "12px", "h-[12px] w-20"],
+              ].map(([name, value, sizeClass]) => (
+                <div>
+                  <div class:list={["rounded-sm bg-accent", sizeClass]} />
+                  <p class="wf-technical mt-2">
+                    {name} / {value}
+                  </p>
+                </div>
+              ))
+            }
+          </div>
+          <p class="wf-copy mt-6">
+            Standard radius <code class="wf-technical">4px</code>; large
+            surfaces <code class="wf-technical">8px</code>.
+          </p>
+        </Card>
+      </section>
+    </Container>
+  </main>
+</BaseLayout>

@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "source": "fallback",
+  "generatedAt": "2026-06-06T00:00:00.000Z",
+  "repository": "leocallidus/waveflux",
+  "version": "1.3.1",
+  "tagName": "v1.3.1",
+  "name": "WaveFlux 1.3.1",
+  "publishedAt": "2026-05-30T15:44:35Z",
+  "htmlUrl": "https://github.com/leocallidus/waveflux/releases/tag/v1.3.1",
+  "assets": [
+    {
+      "name": "WaveFlux-1.3.1-windows-x64.msi",
+      "url": "https://github.com/leocallidus/waveflux/releases/download/v1.3.1/WaveFlux-1.3.1-windows-x64.msi",
+      "size": 98927624,
+      "digest": "sha256:5c0c61d8d90f52d9ed6107f232b635d9dff0b1bff0dea04edea2906fd5724498",
+      "contentType": "application/octet-stream",
+      "downloadCount": 0,
+      "updatedAt": "2026-05-30T15:44:17Z"
+    },
+    {
+      "name": "WaveFlux-1.3.1-windows-portable.zip",
+      "url": "https://github.com/leocallidus/waveflux/releases/download/v1.3.1/WaveFlux-1.3.1-windows-portable.zip",
+      "size": 124168656,
+      "digest": "sha256:713679251081a1d75cecd88943e1964bf3a18ba06c2f35a5a65e30828b07c412",
+      "contentType": "application/x-zip-compressed",
+      "downloadCount": 0,
+      "updatedAt": "2026-05-30T15:44:02Z"
+    },
+    {
+      "name": "WaveFlux-1.3.1-x86_64.AppImage",
+      "url": "https://github.com/leocallidus/waveflux/releases/download/v1.3.1/WaveFlux-1.3.1-x86_64.AppImage",
+      "size": 182499832,
+      "digest": "sha256:fdbfdf7bd23a6ac69dd41b06e113a2240b188298953a8edbe5a44a4d8d0ee40d",
+      "contentType": "application/octet-stream",
+      "downloadCount": 0,
+      "updatedAt": "2026-05-30T15:44:31Z"
+    },
+    {
+      "name": "waveflux_1.3.1-1_amd64.deb",
+      "url": "https://github.com/leocallidus/waveflux/releases/download/v1.3.1/waveflux_1.3.1-1_amd64.deb",
+      "size": 2043044,
+      "digest": "sha256:bee94e16daa3ff829fc0f5dca8e6fba330a30ab31c16133f1ad08f10a4ddf262",
+      "contentType": "application/octet-stream",
+      "downloadCount": 2,
+      "updatedAt": "2026-05-30T15:43:39Z"
+    },
+    {
+      "name": "waveflux-1.3.1-1.fc43.x86_64.rpm",
+      "url": "https://github.com/leocallidus/waveflux/releases/download/v1.3.1/waveflux-1.3.1-1.fc43.x86_64.rpm",
+      "size": 2358634,
+      "digest": "sha256:d7ba9f9ba1f743da0f17bb09a26164e36342b7338a0043949f5f2348b0b267c6",
+      "contentType": "application/octet-stream",
+      "downloadCount": 0,
+      "updatedAt": "2026-05-30T15:43:41Z"
+    },
+    {
+      "name": "waveflux-1.3.1-1-x86_64.pkg.tar.zst",
+      "url": "https://github.com/leocallidus/waveflux/releases/download/v1.3.1/waveflux-1.3.1-1-x86_64.pkg.tar.zst",
+      "size": 2776180,
+      "digest": "sha256:fae7ffc25259484b781e6b2ab5bc30fed37cd19cebe78c3e82ed119fe083e092",
+      "contentType": "application/x-compressed",
+      "downloadCount": 0,
+      "updatedAt": "2026-05-30T15:43:44Z"
+    }
+  ],
+  "downloads": {
+    "windowsMsi": "WaveFlux-1.3.1-windows-x64.msi",
+    "windowsPortable": "WaveFlux-1.3.1-windows-portable.zip",
+    "appImage": "WaveFlux-1.3.1-x86_64.AppImage",
+    "debian": "waveflux_1.3.1-1_amd64.deb",
+    "rpm": "waveflux-1.3.1-1.fc43.x86_64.rpm",
+    "arch": "waveflux-1.3.1-1-x86_64.pkg.tar.zst"
+  }
+}

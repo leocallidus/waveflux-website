@@ -1,0 +1,19 @@
+---
+import LandingPage from "../components/pages/LandingPage.astro";
+import { getDictionary } from "../i18n";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import mainPlayerScreenshot from "../../../screenshots/main-player-window-dark.png";
+
+const locale = "en";
+const dictionary = getDictionary(locale);
+---
+
+<BaseLayout
+  title={dictionary.meta.title}
+  description={dictionary.meta.description}
+  lang={locale}
+  canonicalPath="/"
+  image={mainPlayerScreenshot.src}
+>
+  <LandingPage dictionary={dictionary} locale={locale} />
+</BaseLayout>

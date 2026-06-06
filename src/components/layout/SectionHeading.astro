@@ -1,0 +1,21 @@
+---
+interface Props {
+  eyebrow: string;
+  title: string;
+  description: string;
+  titleId: string;
+  align?: "left" | "center";
+}
+
+const { eyebrow, title, description, titleId, align = "left" } = Astro.props;
+---
+
+<header
+  class:list={["wf-section-heading", align === "center" && "text-center"]}
+>
+  <p class="wf-eyebrow">{eyebrow}</p>
+  <h2 id={titleId} class="wf-title mt-2">{title}</h2>
+  <p class:list={["wf-copy mt-3 max-w-prose", align === "center" && "mx-auto"]}>
+    {description}
+  </p>
+</header>

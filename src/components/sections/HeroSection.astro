@@ -1,0 +1,167 @@
+---
+import { Picture } from "astro:assets";
+import { getDownloadAsset } from "../../content/release";
+import { site } from "../../content/site";
+import type { Dictionary } from "../../i18n";
+import mainPlayerScreenshotDark from "../../../../screenshots/main-player-window-dark.png";
+import mainPlayerScreenshotLight from "../../../../screenshots/main-player-window-light.png";
+import Container from "../layout/Container.astro";
+import Badge from "../ui/Badge.astro";
+import Button from "../ui/Button.astro";
+
+interface Props {
+  dictionary: Dictionary;
+}
+
+const { dictionary: t } = Astro.props;
+const mainPlayer = t.showcase.items.mainPlayer;
+const windowsHeroAsset = getDownloadAsset("windowsMsi");
+const linuxHeroAsset = getDownloadAsset("appImage");
+---
+
+<section id="hero" class="relative overflow-hidden border-b border-line/60">
+  <Container
+    class="grid min-h-[640px] items-center gap-10 py-12 sm:py-16 lg:grid-cols-[0.95fr_1.05fr]"
+  >
+    <div class="relative z-10 max-w-3xl">
+      <p class="wf-eyebrow">{t.hero.eyebrow}</p>
+      <h1 class="wf-display mt-3">{t.hero.title}</h1>
+      <p class="wf-lead mt-5">{t.hero.description}</p>
+
+      <div class="mt-8 flex flex-wrap gap-3">
+        <Button
+          href="#downloads"
+          data-download-cta
+          data-download-source="hero"
+          data-fallback-label={t.hero.primaryAction}
+          data-windows-label={t.hero.primaryActionWindows}
+          data-linux-label={t.hero.primaryActionLinux}
+          data-windows-url={windowsHeroAsset?.url}
+          data-linux-url={linuxHeroAsset?.url}
+        >
+          {t.hero.primaryAction}
+        </Button>
+        <Button href="#downloads" variant="secondary">
+          {t.hero.secondaryAction}
+        </Button>
+      </div>
+
+      <dl class="mt-8 flex flex-wrap gap-2">
+        <div>
+          <dt class="sr-only">{t.hero.versionLabel}</dt>
+          <dd><Badge variant="accent">v{site.version}</Badge></dd>
+        </div>
+        <div>
+          <dt class="sr-only">{t.hero.licenseLabel}</dt>
+          <dd><Badge>{site.license}</Badge></dd>
+        </div>
+        <div>
+          <dt class="sr-only">{t.hero.sourceLabel}</dt>
+          <dd><Badge>{t.hero.sourceValue}</Badge></dd>
+        </div>
+      </dl>
+    </div>
+
+    <div class="relative z-10">
+      <figure class="wf-hero-panel">
+        <div class="flex items-center gap-2 border-b border-line px-3 py-2">
+          <span class="h-2 w-2 rounded-full" style="background:#ef4444cc"></span>
+          <span class="h-2 w-2 rounded-full" style="background:#f59e0bcc"></span>
+          <span class="h-2 w-2 rounded-full" style="background:#22c55ecc"></span>
+          <span class="ml-2 truncate font-mono text-xs text-ink-muted">
+            {mainPlayer.title}
+          </span>
+        </div>
+        <div class="wf-hero-image-frame">
+          <Picture
+            src={mainPlayerScreenshotDark}
+            alt={mainPlayer.alt}
+            formats={["webp"]}
+            widths={[640, 960, 1207]}
+            sizes="(min-width: 1024px) 52vw, 100vw"
+            loading="eager"
+            decoding="sync"
+            fetchpriority="high"
+            class="wf-hero-image wf-hero-image-dark"
+          />
+          <Picture
+            src={mainPlayerScreenshotLight}
+            alt={mainPlayer.alt}
+            formats={["webp"]}
+            widths={[640, 960, 1207]}
+            sizes="(min-width: 1024px) 52vw, 100vw"
+            loading="eager"
+            decoding="sync"
+            fetchpriority="high"
+            class="wf-hero-image wf-hero-image-light"
+          />
+        </div>
+        <figcaption
+          class="border-t border-line px-3 py-2 text-xs text-ink-muted"
+        >
+          {mainPlayer.description}
+        </figcaption>
+      </figure>
+    </div>
+  </Container>
+  <div class="wf-hero-wave" aria-hidden="true"></div>
+</section>
+
+<style>
+  .wf-hero-panel {
+    overflow: hidden;
+    border: 1px solid rgb(var(--color-line));
+    border-radius: 8px;
+    background: rgb(var(--color-surface) / 0.86);
+    box-shadow:
+      0 24px 70px rgb(0 0 0 / 0.32),
+      0 0 80px rgb(var(--color-accent) / 0.08);
+  }
+
+  .wf-hero-image-frame {
+    background:
+      radial-gradient(
+        circle at 50% 100%,
+        rgb(var(--color-accent) / 0.12),
+        transparent 36%
+      ),
+      rgb(var(--color-surface-sunken));
+  }
+
+  .wf-hero-image {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  :global(:root[data-theme="dark"]) .wf-hero-image-light {
+    display: none;
+  }
+
+  :global(:root:not([data-theme="dark"])) .wf-hero-image-dark {
+    display: none;
+  }
+
+  .wf-hero-wave {
+    position: absolute;
+    inset: auto -10% 0;
+    height: 180px;
+    pointer-events: none;
+    background:
+      linear-gradient(
+        90deg,
+        transparent 0 6px,
+        rgb(var(--color-accent) / 0.1) 6px 10px,
+        transparent 10px 22px
+      ),
+      linear-gradient(180deg, transparent, rgb(var(--color-accent) / 0.08));
+    mask-image: radial-gradient(ellipse at center, black, transparent 72%);
+    transform: translateY(36%);
+  }
+
+  @media (min-width: 1024px) {
+    .wf-hero-panel {
+      transform: perspective(1200px) rotateY(-4deg) rotateX(1.5deg);
+    }
+  }
+</style>

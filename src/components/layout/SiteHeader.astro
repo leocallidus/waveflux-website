@@ -1,0 +1,259 @@
+---
+import { navigation, site } from "../../content/site";
+import { getLocalePath, type Dictionary, type Locale } from "../../i18n";
+import Badge from "../ui/Badge.astro";
+import Container from "./Container.astro";
+import Wordmark from "../brand/Wordmark.astro";
+
+interface Props {
+  dictionary: Dictionary;
+  locale: Locale;
+}
+
+const { dictionary: t, locale } = Astro.props;
+const homeHref = getLocalePath(locale);
+const alternateLocale = locale === "ru" ? "en" : "ru";
+const alternateLocaleHref = getLocalePath(alternateLocale);
+---
+
+<a class="wf-skip-link" href="#main-content">{t.a11y.skipToContent}</a>
+
+<header class="wf-site-header">
+  <Container class="flex min-h-[64px] items-center justify-between gap-4">
+    <a class="no-underline" href={homeHref}>
+      <Wordmark name={site.productName} />
+    </a>
+
+    <nav
+      class="hidden items-center gap-5 md:flex"
+      aria-label={t.a11y.primaryNavigation}
+    >
+      {
+        navigation.map((item) => (
+          <a class="wf-nav-link" href={item.href}>
+            {t.navigation[item.id]}
+          </a>
+        ))
+      }
+    </nav>
+
+    <div class="flex items-center gap-2">
+      <!-- Theme toggle: managed by BaseLayout's theme system via data-theme-toggle -->
+      <button
+        class="wf-theme-toggle"
+        type="button"
+        data-theme-toggle
+        aria-label={t.header.themeLabel}
+        aria-pressed="false"
+      >
+        <span class="wf-theme-toggle__icon" aria-hidden="true">
+          <svg
+            class="wf-theme-toggle__sun"
+            viewBox="0 0 24 24"
+            width="17"
+            height="17"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.9"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="12" cy="12" r="4.5"></circle>
+            <path
+              d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"
+            ></path>
+          </svg>
+          <svg
+            class="wf-theme-toggle__moon"
+            viewBox="0 0 24 24"
+            width="16"
+            height="16"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.9"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </span>
+      </button>
+
+      <!-- Language switch: shows CURRENT locale flag + code, links to alternate -->
+      <a
+        class="wf-lang-switch no-underline"
+        href={alternateLocaleHref}
+        aria-label={t.header.languageSwitchLabel}
+      >
+        <span class="wf-flag" aria-hidden="true">
+          {
+            locale === "ru" ? (
+              <svg viewBox="0 0 30 20" width="24" height="16" xmlns="http://www.w3.org/2000/svg">
+                <rect width="30" height="20" fill="#fff" />
+                <rect y="6.667" width="30" height="6.667" fill="#0039A6" />
+                <rect y="13.333" width="30" height="6.667" fill="#D52B1E" />
+              </svg>
+            ) : (
+              <svg viewBox="0 0 60 30" width="24" height="12" xmlns="http://www.w3.org/2000/svg">
+                <rect width="60" height="30" fill="#012169" />
+                <path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6" />
+                <path d="M0,0 L60,30 M60,0 L0,30" stroke="#C8102E" stroke-width="4" />
+                <path d="M30,0 V30 M0,15 H60" stroke="#fff" stroke-width="10" />
+                <path d="M30,0 V30 M0,15 H60" stroke="#C8102E" stroke-width="6" />
+              </svg>
+            )
+          }
+        </span>
+        <span class="wf-lang-switch__label" aria-hidden="true">
+          {t.header.languageValue}
+        </span>
+      </a>
+
+      <Badge variant="accent">v{site.version}</Badge>
+    </div>
+  </Container>
+
+  <nav class="wf-mobile-nav md:hidden" aria-label={t.a11y.primaryNavigation}>
+    <Container class="flex gap-4 overflow-x-auto pb-2">
+      {
+        navigation.map((item) => (
+          <a class="wf-nav-link whitespace-nowrap" href={item.href}>
+            {t.navigation[item.id]}
+          </a>
+        ))
+      }
+    </Container>
+  </nav>
+</header>
+
+<style>
+  .wf-site-header {
+    position: sticky;
+    z-index: 30;
+    top: 0;
+    border-bottom: 1px solid rgb(var(--color-line) / 0.75);
+    background: rgb(var(--color-canvas) / 0.88);
+    backdrop-filter: blur(18px);
+  }
+
+  .wf-nav-link {
+    color: rgb(var(--color-ink-secondary));
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 160ms ease;
+  }
+
+  .wf-nav-link:hover {
+    color: rgb(var(--color-ink));
+  }
+
+  .wf-mobile-nav {
+    border-top: 1px solid rgb(var(--color-line) / 0.55);
+  }
+
+  .wf-theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border: 1px solid rgb(var(--color-line));
+    border-radius: 6px;
+    background: rgb(var(--color-surface));
+    color: rgb(var(--color-ink-secondary));
+    cursor: pointer;
+    overflow: hidden;
+    transition: border-color 0.15s, color 0.15s;
+  }
+
+  .wf-theme-toggle:hover {
+    border-color: rgb(var(--color-accent) / 0.5);
+    color: rgb(var(--color-accent));
+  }
+
+  .wf-theme-toggle__icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 17px;
+    height: 17px;
+  }
+
+  .wf-theme-toggle__sun,
+  .wf-theme-toggle__moon {
+    position: absolute;
+    transition: opacity 0.25s ease, transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  :root:not([data-theme="light"]) .wf-theme-toggle__sun {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+  }
+  :root:not([data-theme="light"]) .wf-theme-toggle__moon {
+    opacity: 0;
+    transform: rotate(-90deg) scale(0.5);
+  }
+  :root[data-theme="light"] .wf-theme-toggle__sun {
+    opacity: 0;
+    transform: rotate(90deg) scale(0.5);
+  }
+  :root[data-theme="light"] .wf-theme-toggle__moon {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+  }
+
+  .wf-lang-switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    height: 2rem;
+    border: 1px solid rgb(var(--color-line));
+    border-radius: 6px;
+    padding: 0 8px;
+    background: rgb(var(--color-surface));
+    color: rgb(var(--color-ink-secondary));
+    font-size: 0.75rem;
+    font-weight: 700;
+    line-height: 1;
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s;
+  }
+
+  .wf-lang-switch:hover {
+    border-color: rgb(var(--color-accent) / 0.5);
+    color: rgb(var(--color-ink));
+  }
+
+  .wf-flag {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+    border-radius: 2px;
+    overflow: hidden;
+    box-shadow: 0 0 0 1px rgb(0 0 0 / 0.18);
+    line-height: 0;
+  }
+
+  .wf-lang-switch__label {
+    letter-spacing: 0.03em;
+  }
+
+  .wf-skip-link {
+    position: fixed;
+    z-index: 50;
+    top: 8px;
+    left: 8px;
+    padding: 8px 12px;
+    border-radius: 4px;
+    background: rgb(var(--color-accent));
+    color: rgb(var(--color-accent-contrast));
+    font-weight: 700;
+    transform: translateY(-150%);
+  }
+
+  .wf-skip-link:focus {
+    transform: translateY(0);
+  }
+</style>

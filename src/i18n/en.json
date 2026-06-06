@@ -1,0 +1,216 @@
+{
+  "meta": {
+    "title": "WaveFlux — waveform-first desktop audio player",
+    "description": "A desktop audio player for Windows and Linux with waveform navigation, local library tools, playlists, tracker modules and metadata editing."
+  },
+  "a11y": {
+    "skipToContent": "Skip to content",
+    "primaryNavigation": "Primary navigation",
+    "footerNavigation": "Footer navigation"
+  },
+  "header": {
+    "menuLabel": "Menu",
+    "languageLabel": "Language",
+    "languageValue": "EN",
+    "languageSwitchLabel": "Switch language to Russian",
+    "languageSwitchValue": "RU",
+    "themeLabel": "Theme",
+    "themeDark": "Dark",
+    "themeLight": "Light"
+  },
+  "navigation": {
+    "showcase": "Screenshots",
+    "features": "Features",
+    "downloads": "Downloads",
+    "openSource": "Open source"
+  },
+  "hero": {
+    "eyebrow": "Local playback · Windows and Linux",
+    "title": "Desktop audio player with waveform navigation",
+    "description": "Browse a local library, move through tracks by waveform, manage playlists and play tracker modules in one focused desktop application.",
+    "primaryAction": "Download WaveFlux",
+    "primaryActionWindows": "Download for Windows",
+    "primaryActionLinux": "Download for Linux",
+    "secondaryAction": "Other platforms and packages",
+    "versionLabel": "Version",
+    "licenseLabel": "License",
+    "sourceLabel": "Source code",
+    "sourceValue": "GitHub"
+  },
+  "showcase": {
+    "eyebrow": "Interface",
+    "title": "Your library stays in view",
+    "description": "The main player, detailed settings and compact controls share the same direct visual language.",
+    "items": {
+      "mainPlayer": {
+        "title": "Main player",
+        "description": "Waveform navigation, playlist context and playback controls in one window.",
+        "alt": "WaveFlux main player window"
+      },
+      "settings": {
+        "title": "Settings",
+        "description": "Playback, appearance and integration options grouped by task.",
+        "alt": "WaveFlux settings dialog"
+      },
+      "compact": {
+        "title": "Compact mode",
+        "description": "Essential transport controls and track context in a smaller surface.",
+        "alt": "WaveFlux compact player mode"
+      }
+    }
+  },
+  "features": {
+    "eyebrow": "Capabilities",
+    "title": "Tools for local listening workflows",
+    "description": "WaveFlux combines playback, library organization and audio utilities without moving your collection to a cloud service.",
+    "items": {
+      "waveform": {
+        "title": "Waveform navigation",
+        "description": "Scrub and zoom through cached peaks, with a dedicated fullscreen waveform mode."
+      },
+      "playback": {
+        "title": "Continuous playback",
+        "description": "Gapless flow, queue, repeat, deterministic shuffle and session restore keep playback predictable."
+      },
+      "trackers": {
+        "title": "Native tracker modules",
+        "description": "OpenMPT playback for .669, .mod, .xm, .s3m and .it with seek, waveform, spectrum and session restore."
+      },
+      "equalizer": {
+        "title": "10-band equalizer",
+        "description": "Use built-in presets or import and export your own equalizer settings."
+      },
+      "playlists": {
+        "title": "Flexible playlists",
+        "description": "Import files, folders, URLs, XSPF and CUE; export playlists as M3U, M3U8 or JSON."
+      },
+      "urlImport": {
+        "title": "Audio import from URL",
+        "description": "Probe sources with yt-dlp, choose a format and review retries and import results."
+      },
+      "converter": {
+        "title": "Audio converter",
+        "description": "Convert single tracks or batches with format validation, profiles and speed or pitch controls."
+      },
+      "tags": {
+        "title": "Metadata editing",
+        "description": "Edit one track or a batch, including cover art where the audio format supports it."
+      },
+      "library": {
+        "title": "Smart local library",
+        "description": "SQLite-backed collections and field-aware search keep large libraries navigable."
+      },
+      "desktop": {
+        "title": "Desktop integration",
+        "description": "Use SMTC on Windows and MPRIS with XDG portals on supported Linux desktops."
+      },
+      "appearance": {
+        "title": "Adaptable interface",
+        "description": "Choose light or dark appearance, a custom accent and normal or compact player modes."
+      },
+      "languages": {
+        "title": "English and Russian",
+        "description": "The application interface and core workflows are available in both languages."
+      }
+    }
+  },
+  "downloads": {
+    "eyebrow": "Packages",
+    "title": "Choose a build for your system",
+    "description": "Use a Windows installer or portable archive, an AppImage, or a native package for your Linux distribution.",
+    "statusLabel": "Package target",
+    "fileLabel": "File",
+    "sizeLabel": "Size",
+    "checksumLabel": "Checksum",
+    "recommendedLabel": "Detected platform",
+    "downloadAction": "Download",
+    "placeholderAction": "View releases",
+    "releaseNotesAction": "Release notes",
+    "missingAsset": "Release asset unavailable",
+    "installTitle": "Install from a package",
+    "requirementsTitle": "System requirements",
+    "copyLabel": "Copy",
+    "copiedLabel": "Copied",
+    "requirements": [
+      "Windows 10 or newer, or a recent Linux desktop distribution.",
+      "A working audio stack: Windows audio services, PipeWire or PulseAudio on Linux.",
+      "Linux packages may require Qt 6, KDE Frameworks 6, GStreamer, TagLib and libopenmpt depending on the package format."
+    ],
+    "platforms": {
+      "windows": "Windows",
+      "linux": "Linux"
+    },
+    "items": {
+      "windowsMsi": {
+        "title": "MSI installer",
+        "description": "Standard installation for 64-bit Windows.",
+        "format": ".msi"
+      },
+      "windowsPortable": {
+        "title": "Portable archive",
+        "description": "Run WaveFlux from an extracted folder.",
+        "format": ".zip"
+      },
+      "appImage": {
+        "title": "AppImage",
+        "description": "Portable Linux build without system installation.",
+        "format": ".AppImage"
+      },
+      "debian": {
+        "title": "Debian package",
+        "description": "Package for Debian, Ubuntu and compatible systems.",
+        "format": ".deb"
+      },
+      "rpm": {
+        "title": "RPM package",
+        "description": "Package for Fedora and compatible systems.",
+        "format": ".rpm"
+      },
+      "arch": {
+        "title": "Arch package",
+        "description": "Build recipe and package support for Arch Linux.",
+        "format": "pkg.tar.zst"
+      }
+    },
+    "showOtherPlatform": "Show downloads for another platform",
+    "commands": {
+      "appImage": {
+        "title": "AppImage",
+        "template": "chmod +x {file}\n./{file}"
+      },
+      "debian": {
+        "title": "Debian / Ubuntu",
+        "template": "sudo apt install ./{file}"
+      },
+      "rpm": {
+        "title": "Fedora / RPM",
+        "template": "sudo dnf install ./{file}"
+      },
+      "arch": {
+        "title": "Arch Linux",
+        "template": "sudo pacman -U {file}"
+      }
+    }
+  },
+  "trust": {
+    "eyebrow": "Open source",
+    "title": "Inspect the code. Keep your library private.",
+    "description": "WaveFlux is released under the MIT license. Update checks read public release metadata and do not send library contents, file paths, playlists or user settings.",
+    "starAction": "Star on GitHub",
+    "repositoryAction": "View repository",
+    "licenseAction": "Read MIT license",
+    "privacyTitle": "Private by design",
+    "privacyDescription": "Only technical update metadata such as the last check time, ETag and skipped release is stored."
+  },
+  "footer": {
+    "summary": "Waveform-first local audio playback for Windows and Linux.",
+    "downloadAction": "Download WaveFlux",
+    "copyright": "© {year} WaveFlux contributors. Released under the MIT license.",
+    "links": {
+      "github": "GitHub",
+      "releases": "Releases",
+      "readme": "README",
+      "license": "License"
+    }
+  }
+}

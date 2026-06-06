@@ -1,0 +1,77 @@
+---
+import { site } from "../../content/site";
+import type { Dictionary } from "../../i18n";
+import AppIcon from "../brand/AppIcon.astro";
+import Container from "../layout/Container.astro";
+import Badge from "../ui/Badge.astro";
+import Button from "../ui/Button.astro";
+import Card from "../ui/Card.astro";
+
+interface Props {
+  dictionary: Dictionary;
+}
+
+const { dictionary: t } = Astro.props;
+---
+
+<section
+  id="open-source"
+  class="wf-section border-t border-line/60 bg-surface-sunken/45"
+  aria-labelledby="trust-title"
+>
+  <Container>
+    <Card accent class="grid gap-8 p-6 md:grid-cols-[1.3fr_0.7fr] md:p-8">
+      <div>
+        <p class="wf-eyebrow">{t.trust.eyebrow}</p>
+        <h2 id="trust-title" class="wf-title mt-2">{t.trust.title}</h2>
+        <p class="wf-copy mt-4 max-w-prose">{t.trust.description}</p>
+        <div class="mt-6 flex flex-wrap gap-3">
+          <Button
+            href={site.repository}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {t.trust.starAction}
+          </Button>
+          <Button
+            href={site.repository}
+            variant="secondary"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {t.trust.repositoryAction}
+          </Button>
+          <Button
+            href={`${site.repository}/blob/main/LICENSE`}
+            variant="secondary"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {t.trust.licenseAction}
+          </Button>
+        </div>
+      </div>
+
+      <div class="rounded-md border border-line bg-surface-sunken p-5">
+        <div class="flex items-center justify-between gap-3">
+          <div class="wf-trust-icon"><AppIcon name="library" /></div>
+          <Badge>{site.license}</Badge>
+        </div>
+        <h3 class="mt-5 text-lg">{t.trust.privacyTitle}</h3>
+        <p class="wf-copy mt-2 text-sm">{t.trust.privacyDescription}</p>
+      </div>
+    </Card>
+  </Container>
+</section>
+
+<style>
+  .wf-trust-icon {
+    display: grid;
+    width: 2.75rem;
+    height: 2.75rem;
+    place-items: center;
+    border-radius: 8px;
+    background: rgb(var(--color-accent) / 0.1);
+    color: rgb(var(--color-accent));
+  }
+</style>

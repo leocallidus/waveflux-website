@@ -1,0 +1,48 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+type Variant = "neutral" | "accent" | "danger";
+
+interface Props extends HTMLAttributes<"span"> {
+  variant?: Variant;
+}
+
+const { variant = "neutral", class: className, ...attrs } = Astro.props;
+---
+
+<span class:list={["wf-badge", `wf-badge--${variant}`, className]} {...attrs}>
+  <slot />
+</span>
+
+<style>
+  .wf-badge {
+    display: inline-flex;
+    min-height: 1.625rem;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid rgb(var(--color-line));
+    border-radius: 4px;
+    padding: 3px 8px;
+    background: rgb(var(--color-surface-sunken));
+    color: rgb(var(--color-ink-secondary));
+    font-family:
+      ui-monospace, SFMono-Regular, "Cascadia Code", "Roboto Mono", Consolas,
+      monospace;
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .wf-badge--accent {
+    border-color: rgb(var(--color-accent) / 0.42);
+    background: rgb(var(--color-accent) / 0.1);
+    color: rgb(var(--color-accent));
+  }
+
+  .wf-badge--danger {
+    border-color: rgb(var(--color-danger) / 0.42);
+    background: rgb(var(--color-danger) / 0.1);
+    color: rgb(var(--color-danger));
+  }
+</style>

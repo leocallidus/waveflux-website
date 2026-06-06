@@ -1,0 +1,84 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"div"> {
+  label?: string;
+  decorative?: boolean;
+}
+
+const {
+  label = "Audio waveform",
+  decorative = true,
+  class: className,
+  ...attrs
+} = Astro.props;
+
+const bars = [18, 34, 52, 76, 44, 88, 62, 30, 68, 96, 58, 40, 74, 50, 24];
+---
+
+<div
+  class:list={["wf-waveform", className]}
+  aria-hidden={decorative ? "true" : undefined}
+  role={decorative ? undefined : "img"}
+  aria-label={decorative ? undefined : label}
+  {...attrs}
+>
+  {
+    bars.map((height, index) => (
+      <span
+        class="wf-waveform__bar"
+        style={`--bar-height: ${height}%; --bar-delay: ${index * -70}ms`}
+      />
+    ))
+  }
+</div>
+
+<style>
+  .wf-waveform {
+    display: flex;
+    height: 6rem;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    overflow: hidden;
+    color: rgb(var(--color-waveform));
+    mask-image: linear-gradient(
+      90deg,
+      transparent,
+      black 10%,
+      black 90%,
+      transparent
+    );
+  }
+
+  .wf-waveform__bar {
+    width: clamp(3px, 0.5vw, 6px);
+    height: var(--bar-height);
+    flex: 0 1 6px;
+    border-radius: 4px;
+    background: currentColor;
+    box-shadow: 0 0 18px rgb(var(--color-waveform) / 0.2);
+    opacity: 0.72;
+    transform-origin: center;
+    animation: waveform-pulse 2.8s ease-in-out var(--bar-delay) infinite;
+  }
+
+  @keyframes waveform-pulse {
+    0%,
+    100% {
+      transform: scaleY(0.72);
+      opacity: 0.48;
+    }
+
+    50% {
+      transform: scaleY(1);
+      opacity: 0.9;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .wf-waveform__bar {
+      animation: none;
+    }
+  }
+</style>

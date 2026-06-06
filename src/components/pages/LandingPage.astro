@@ -1,0 +1,27 @@
+---
+import type { Dictionary, Locale } from "../../i18n";
+import SiteFooter from "../layout/SiteFooter.astro";
+import SiteHeader from "../layout/SiteHeader.astro";
+import DownloadsSection from "../sections/DownloadsSection.astro";
+import FeaturesSection from "../sections/FeaturesSection.astro";
+import HeroSection from "../sections/HeroSection.astro";
+import ShowcaseSection from "../sections/ShowcaseSection.astro";
+import TrustSection from "../sections/TrustSection.astro";
+
+interface Props {
+  dictionary: Dictionary;
+  locale: Locale;
+}
+
+const { dictionary, locale } = Astro.props;
+---
+
+<SiteHeader dictionary={dictionary} locale={locale} />
+<main id="main-content">
+  <HeroSection dictionary={dictionary} />
+  <ShowcaseSection dictionary={dictionary} />
+  <FeaturesSection dictionary={dictionary} />
+  <DownloadsSection dictionary={dictionary} />
+  <TrustSection dictionary={dictionary} />
+</main>
+<SiteFooter dictionary={dictionary} locale={locale} />
