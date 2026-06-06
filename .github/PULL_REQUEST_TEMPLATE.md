@@ -1,6 +1,6 @@
 ## Summary
 
-- 
+-
 
 ## Validation
 
@@ -24,4 +24,4 @@ Memory-sensitive paths include:
 
 ## Risks / Follow-ups
 
-- 
+-

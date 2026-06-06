@@ -117,9 +117,9 @@ Lighthouse CI requires a running preview server; `lhci:check` starts one automat
 
 The site deploys to GitHub Pages via CI. The Astro config reads `GITHUB_REPOSITORY` and `GITHUB_REPOSITORY_OWNER` to set the correct `site` and `base` path. A custom domain can be set via `PUBLIC_SITE_URL`.
 
-| Variable | Effect |
-|----------|--------|
-| `GITHUB_REPOSITORY` | Sets repo name for base path (e.g. `leocallidus/waveflux`) |
-| `GITHUB_REPOSITORY_OWNER` | Sets owner for default site URL |
-| `PUBLIC_SITE_URL` | Override site URL (e.g. for a custom domain) |
-| `GITHUB_TOKEN` | Used by `release:generate` to avoid API rate limits |
+| Variable                  | Effect                                                     |
+| ------------------------- | ---------------------------------------------------------- |
+| `GITHUB_REPOSITORY`       | Sets repo name for base path (e.g. `leocallidus/waveflux`) |
+| `GITHUB_REPOSITORY_OWNER` | Sets owner for default site URL                            |
+| `PUBLIC_SITE_URL`         | Override site URL (e.g. for a custom domain)               |
+| `GITHUB_TOKEN`            | Used by `release:generate` to avoid API rate limits        |

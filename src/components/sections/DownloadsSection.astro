@@ -106,7 +106,9 @@ const downloadIcon: Record<DownloadId, PlatformIconName> = {
                             class="wf-distro-icon flex-shrink-0"
                           />
                           <div class="min-w-0">
-                            <p class="wf-technical">{t.downloads.statusLabel}</p>
+                            <p class="wf-technical">
+                              {t.downloads.statusLabel}
+                            </p>
                             <h4 class="mt-1 font-semibold text-ink">
                               {item.title}
                             </h4>
@@ -250,7 +252,9 @@ const downloadIcon: Record<DownloadId, PlatformIconName> = {
                               class="wf-distro-icon flex-shrink-0"
                             />
                             <div class="min-w-0">
-                              <p class="wf-technical">{t.downloads.statusLabel}</p>
+                              <p class="wf-technical">
+                                {t.downloads.statusLabel}
+                              </p>
                               <h4 class="mt-1 font-semibold text-ink">
                                 {item.title}
                               </h4>
@@ -353,7 +357,12 @@ const downloadIcon: Record<DownloadId, PlatformIconName> = {
                   copyLabel={t.downloads.copyLabel}
                   copiedLabel={t.downloads.copiedLabel}
                 >
-                  <PlatformIcon slot="icon" name={icon} size={15} class="wf-install-icon" />
+                  <PlatformIcon
+                    slot="icon"
+                    name={icon}
+                    size={15}
+                    class="wf-install-icon"
+                  />
                 </CodeBlock>
               );
             })
@@ -442,8 +451,9 @@ const downloadIcon: Record<DownloadId, PlatformIconName> = {
         );
       });
 
-    const ctas =
-      document.querySelectorAll<HTMLAnchorElement>("[data-download-cta]");
+    const ctas = document.querySelectorAll<HTMLAnchorElement>(
+      "[data-download-cta]",
+    );
     if (!preferredDownloadId) {
       ctas.forEach((cta) => {
         delete cta.dataset.detectedPlatform;
