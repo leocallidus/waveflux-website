@@ -172,6 +172,8 @@
         "format": "pkg.tar.zst"
       }
     },
+    "unsupportedPlatform": "WaveFlux is available for Windows and Linux. Your current platform is not yet supported.",
+    "showAllPlatforms": "Show all available downloads",
     "showOtherPlatform": "Show downloads for another platform",
     "commands": {
       "appImage": {

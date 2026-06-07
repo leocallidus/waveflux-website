@@ -62,6 +62,16 @@ const downloadIcon: Record<DownloadId, PlatformIconName> = {
     </div>
 
     <div class="mt-8" data-platforms-container>
+      <div class="hidden" data-unsupported-platform-notice>
+        <div class="wf-unsupported-notice">
+          <svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" class="flex-shrink-0 mt-0.5">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+          <p>{t.downloads.unsupportedPlatform}</p>
+        </div>
+      </div>
       {
         platformOrder.map((platform) => (
           <div
@@ -392,32 +402,47 @@ const downloadIcon: Record<DownloadId, PlatformIconName> = {
     const ua = navigator.userAgent.toLowerCase();
     if (ua.includes("windows")) return "windows";
     if (ua.includes("linux")) return "linux";
+    if (
+      ua.includes("android") ||
+      ua.includes("iphone") ||
+      ua.includes("ipad") ||
+      ua.includes("ipod") ||
+      ua.includes("mac os x") ||
+      ua.includes("cros")
+    )
+      return "unsupported";
     return "unknown";
   };
 
   const initializeDownloads = () => {
     const platform = platformFromUserAgent();
-    const preferredDownloadId =
-      platform === "windows"
+    const isUnsupported = platform === "unsupported";
+    const isKnown = platform === "windows" || platform === "linux";
+
+    const preferredDownloadId = isKnown
+      ? platform === "windows"
         ? "windowsMsi"
-        : platform === "linux"
-          ? "appImage"
-          : null;
-    const otherPlatform =
-      platform === "windows"
+        : "appImage"
+      : null;
+    const otherPlatform = isKnown
+      ? platform === "windows"
         ? "linux"
-        : platform === "linux"
-          ? "windows"
-          : null;
+        : "windows"
+      : null;
+
+    const notice = document.querySelector<HTMLElement>(
+      "[data-unsupported-platform-notice]",
+    );
+    if (notice) notice.classList.toggle("hidden", !isUnsupported);
 
     document
       .querySelectorAll<HTMLElement>("[data-download-platform]")
       .forEach((section) => {
         const sectionPlatform = section.dataset.downloadPlatform;
-        if (platform === "unknown") {
-          section.classList.remove("hidden");
-        } else {
+        if (isKnown) {
           section.classList.toggle("hidden", sectionPlatform !== platform);
+        } else {
+          section.classList.add("hidden");
         }
         section
           .querySelectorAll<HTMLElement>("[data-detected-platform-badge]")
@@ -430,17 +455,37 @@ const downloadIcon: Record<DownloadId, PlatformIconName> = {
       "[data-other-platform-toggle]",
     );
     if (toggleWrap) {
-      toggleWrap.classList.toggle("hidden", platform === "unknown");
+      toggleWrap.classList.remove("hidden");
     }
 
-    document
-      .querySelectorAll<HTMLElement>("[data-other-platform]")
-      .forEach((section) => {
-        section.classList.toggle(
-          "hidden",
-          section.dataset.otherPlatform !== otherPlatform,
-        );
-      });
+    if (isUnsupported) {
+      const section = document.querySelector<HTMLElement>(
+        "[data-other-platform-section]",
+      );
+      const btn = document.querySelector<HTMLButtonElement>(
+        "[data-toggle-other-platform]",
+      );
+      if (section) section.classList.remove("hidden");
+      if (btn) {
+        btn.setAttribute("aria-expanded", "true");
+        const icon = btn.querySelector("svg");
+        if (icon) icon.style.transform = "rotate(180deg)";
+        const label = btn.querySelector<HTMLElement>("[data-toggle-label]");
+        if (label) label.dataset.altLabel = label.textContent ?? "";
+      }
+      document
+        .querySelectorAll<HTMLElement>("[data-other-platform]")
+        .forEach((s) => s.classList.remove("hidden"));
+    } else {
+      document
+        .querySelectorAll<HTMLElement>("[data-other-platform]")
+        .forEach((section) => {
+          section.classList.toggle(
+            "hidden",
+            section.dataset.otherPlatform !== otherPlatform,
+          );
+        });
+    }
 
     document
       .querySelectorAll<HTMLElement>("[data-download-card]")
@@ -538,6 +583,24 @@ const downloadIcon: Record<DownloadId, PlatformIconName> = {
 </script>
 
 <style>
+  .wf-unsupported-notice {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    border: 1px solid rgb(var(--color-line));
+    border-left: 3px solid rgb(var(--color-accent) / 0.7);
+    border-radius: 6px;
+    padding: 12px 16px;
+    background: rgb(var(--color-surface-raised));
+    color: rgb(var(--color-ink-secondary));
+    font-size: 0.875rem;
+  }
+
+  .wf-unsupported-notice svg {
+    color: rgb(var(--color-accent));
+    opacity: 0.8;
+  }
+
   .wf-platform-logo {
     color: rgb(var(--color-ink-secondary));
     opacity: 0.85;
